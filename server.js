@@ -17,22 +17,35 @@ app.get("/", (req, res) => {
   res.json({ status: "GovAI backend running" });
 });
 
-app.post("/run-task", (req, res) => {
-  const { task, input } = req.body ?? {};
+app.post("/run-task", async (req, res) => {
+  const { task, input } = req.body || {};
 
   if (!task) {
-    return res.status(400).json({ error: "task is required" });
+    return res.status(400).json({ error: "Task required" });
   }
 
-  if (task.toLowerCase().includes("pan")) {
+  const lowerTask = task.toLowerCase();
+
+  if (lowerTask.includes("pan")) {
     return res.json({
-      success: true,
-      message: "PAN check working (mock)",
-      input: input,
+      pan: input,
+      status: "Valid",
+      name: "Sample User",
+      category: "Individual",
     });
   }
 
-  return res.status(400).json({ error: "Unknown task" });
+  if (lowerTask.includes("gst")) {
+    return res.json({
+      gst: input,
+      status: "Active",
+      business: "Demo Pvt Ltd",
+    });
+  }
+
+  return res.json({
+    message: "Task not supported yet",
+  });
 });
 
 app.listen(PORT, () => {
