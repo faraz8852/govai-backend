@@ -1,5 +1,4 @@
 import express from "express";
-import { runPanTask } from "./agent/pan.js";
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -18,7 +17,7 @@ app.get("/", (req, res) => {
   res.json({ status: "GovAI backend running" });
 });
 
-app.post("/run-task", async (req, res) => {
+app.post("/run-task", (req, res) => {
   const { task, input } = req.body ?? {};
 
   if (!task) {
@@ -26,8 +25,11 @@ app.post("/run-task", async (req, res) => {
   }
 
   if (task.toLowerCase().includes("pan")) {
-    const result = await runPanTask(input ?? {});
-    return res.json(result);
+    return res.json({
+      success: true,
+      message: "PAN check working (mock)",
+      input: input,
+    });
   }
 
   return res.status(400).json({ error: "Unknown task" });
