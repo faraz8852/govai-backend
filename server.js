@@ -26,7 +26,8 @@ app.post("/run-task", async (req, res) => {
 
   const lowerTask = task.toLowerCase();
 
-  if (lowerTask.includes("gst")) {
+  // STRICT GST check FIRST
+  if (lowerTask.startsWith("check gst")) {
     return res.json({
       gst: input,
       status: "Active",
@@ -34,7 +35,8 @@ app.post("/run-task", async (req, res) => {
     });
   }
 
-  if (lowerTask.includes("pan")) {
+  // STRICT PAN check
+  if (lowerTask.startsWith("check pan")) {
     return res.json({
       pan: input,
       status: "Valid",
@@ -43,9 +45,7 @@ app.post("/run-task", async (req, res) => {
     });
   }
 
-  return res.json({
-    message: "Task not supported yet",
-  });
+  return res.json({ message: "Task not supported yet" });
 });
 
 app.listen(PORT, () => {
