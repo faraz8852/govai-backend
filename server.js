@@ -26,10 +26,10 @@ app.post("/run-task", async (req, res) => {
 
   const lowerTask = task.toLowerCase();
 
-  // GST
-  if (lowerTask.startsWith("check gst")) {
-    const parts = task.split(" ");
-    const gst = parts[2];
+  // GST (regex extraction)
+  if (lowerTask.includes("gst")) {
+    const match = task.match(/[0-9A-Z]{15}/);
+    const gst = match ? match[0] : "NOT_FOUND";
     return res.json({
       gst,
       status: "Active",
@@ -37,10 +37,10 @@ app.post("/run-task", async (req, res) => {
     });
   }
 
-  // PAN
-  if (lowerTask.startsWith("check pan")) {
-    const parts = task.split(" ");
-    const pan = parts[2];
+  // PAN (regex extraction)
+  if (lowerTask.includes("pan")) {
+    const match = task.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
+    const pan = match ? match[0] : "NOT_FOUND";
     return res.json({
       pan,
       status: "Valid",
