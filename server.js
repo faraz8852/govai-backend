@@ -1,6 +1,6 @@
 import express from "express";
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
@@ -28,7 +28,8 @@ app.post("/run-task", async (req, res) => {
 
   // GST
   if (lowerTask.startsWith("check gst")) {
-    const gst = task.split(" ").pop();
+    const parts = task.split(" ");
+    const gst = parts[2];
     return res.json({
       gst,
       status: "Active",
@@ -38,7 +39,8 @@ app.post("/run-task", async (req, res) => {
 
   // PAN
   if (lowerTask.startsWith("check pan")) {
-    const pan = task.split(" ").pop();
+    const parts = task.split(" ");
+    const pan = parts[2];
     return res.json({
       pan,
       status: "Valid",
@@ -51,5 +53,5 @@ app.post("/run-task", async (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`GovAI backend running on port ${PORT}`);
+  console.log("Server running on port " + PORT);
 });
