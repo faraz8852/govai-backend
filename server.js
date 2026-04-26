@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 });
 
 app.post("/run-task", async (req, res) => {
-  const { task, input } = req.body || {};
+  const { task } = req.body || {};
 
   if (!task) {
     return res.status(400).json({ error: "Task required" });
@@ -26,19 +26,21 @@ app.post("/run-task", async (req, res) => {
 
   const lowerTask = task.toLowerCase();
 
-  // STRICT GST check FIRST
+  // GST
   if (lowerTask.startsWith("check gst")) {
+    const gst = task.split(" ").pop();
     return res.json({
-      gst: input,
+      gst,
       status: "Active",
       business: "Demo Pvt Ltd",
     });
   }
 
-  // STRICT PAN check
+  // PAN
   if (lowerTask.startsWith("check pan")) {
+    const pan = task.split(" ").pop();
     return res.json({
-      pan: input,
+      pan,
       status: "Valid",
       name: "Sample User",
       category: "Individual",
