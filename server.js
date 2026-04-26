@@ -26,20 +26,20 @@ app.post("/run-task", async (req, res) => {
 
   const lowerTask = task.toLowerCase();
 
+  if (lowerTask.includes("gst")) {
+    return res.json({
+      gst: input,
+      status: "Active",
+      business: "Demo Pvt Ltd",
+    });
+  }
+
   if (lowerTask.includes("pan")) {
     return res.json({
       pan: input,
       status: "Valid",
       name: "Sample User",
       category: "Individual",
-    });
-  }
-
-  if (lowerTask.includes("gst")) {
-    return res.json({
-      gst: input,
-      status: "Active",
-      business: "Demo Pvt Ltd",
     });
   }
 
