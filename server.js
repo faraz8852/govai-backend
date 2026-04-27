@@ -26,26 +26,37 @@ app.post("/run-task", async (req, res) => {
 
   const lowerTask = task.toLowerCase();
 
-  // GST (regex extraction)
-  if (lowerTask.includes("gst")) {
-    const match = task.match(/[0-9A-Z]{15}/);
-    const gst = match ? match[0] : "NOT_FOUND";
+  if (lowerTask.startsWith("check pan")) {
+    const pan = task.split(" ")[2];
     return res.json({
-      gst,
-      status: "Active",
-      business: "Demo Pvt Ltd",
+      type: "pan",
+      steps: [
+        { id: "request_details", status: "done" },
+        { id: "open_portal", status: "done" },
+        { id: "extract_data", status: "running" },
+      ],
+      result: {
+        pan,
+        status: "Valid",
+        name: "Sample User",
+        category: "Individual",
+      },
     });
   }
 
-  // PAN (regex extraction)
-  if (lowerTask.includes("pan")) {
-    const match = task.match(/[A-Z]{5}[0-9]{4}[A-Z]{1}/);
-    const pan = match ? match[0] : "NOT_FOUND";
+  if (lowerTask.startsWith("check gst")) {
+    const gst = task.split(" ")[2];
     return res.json({
-      pan,
-      status: "Valid",
-      name: "Sample User",
-      category: "Individual",
+      type: "gst",
+      steps: [
+        { id: "request_details", status: "done" },
+        { id: "open_portal", status: "done" },
+        { id: "extract_data", status: "running" },
+      ],
+      result: {
+        gst,
+        status: "Active",
+      },
     });
   }
 
